@@ -1,0 +1,5 @@
+{
+  "name": "Recruitment Manager",
+  "description": "A recruitment proposal management interface with list views, filtering, and status tracking.",
+  "requestFramePermissions": []
+}
