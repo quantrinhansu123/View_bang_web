@@ -756,6 +756,11 @@ export default function App({ initialTab = 'customers' }: { initialTab?: 'custom
     fetchOrdersCount();
   }, []);
 
+  // Sync activeTab with initialTab when route changes
+  useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab]);
+
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
