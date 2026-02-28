@@ -888,8 +888,10 @@ export default function App({ initialTab = 'customers' }: { initialTab?: 'custom
       console.log('📊 Supabase Response:', { hasError: !!supabaseError, rowCount: result?.length || 0, error: supabaseError });
       
       if (supabaseError) {
-        const errorMsg = `❌ Lỗi: ${supabaseError.message}`;
+        const errorDetails = `${supabaseError.message} (Code: ${supabaseError.code}, Status: ${supabaseError.status})`;
+        const errorMsg = `❌ Failed to fetch data_new table: ${errorDetails}`;
         console.error(errorMsg, supabaseError);
+        console.warn('⚠️  Make sure the "data_new" table exists in your Supabase database');
         setError(errorMsg);
         console.log('📋 Using mock data instead');
         setData(proposals);
@@ -946,7 +948,10 @@ export default function App({ initialTab = 'customers' }: { initialTab?: 'custom
         .from('orders')
         .select('*', { count: 'exact', head: true });
       
-      if (!error && count !== null) {
+      if (error) {
+        console.error('❌ Error fetching orders count:', error);
+        console.error('Error details:', { status: error.status, message: error.message, code: error.code });
+      } else if (count !== null) {
         setOrdersCount(count);
         console.log('📦 Orders count:', count);
       }
