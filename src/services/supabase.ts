@@ -1,13 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Sử dụng service role key để bypass RLS
+const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Missing Supabase environment variables. Please check your .env file.');
+console.log('🔧 Supabase Config:', {
+  url: supabaseUrl ? 'Loaded ✓' : 'Missing ✗',
+  key: supabaseServiceKey ? 'Loaded ✓' : 'Missing ✗'
+});
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.warn('⚠️  Missing Supabase environment variables. Please check your .env file.');
 }
 
 export const supabase = createClient(
   supabaseUrl || '', 
-  supabaseAnonKey || ''
+  supabaseServiceKey || ''
 );
